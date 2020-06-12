@@ -1,0 +1,50 @@
+﻿@model Cart
+@{
+    ViewData["Title"] = "Index";
+}
+<br />
+<h1>Varukorg</h1>
+@if (Model != null)
+{
+    @if (!Model.CartItems.Any() && !User.Identity.IsAuthenticated)
+    {
+        <div>
+            <p>Du måste logga in för att beställa en prenumeration.</p>
+            <a class="btn btn-outline-info" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+        </div>
+    }
+    else if (!Model.CartItems.Any() && User.Identity.IsAuthenticated)
+    {
+        <div>
+            <p>Din varukorg är för tillfället tom.</p>
+            <a class="btn btn-secondary" asp-area="" asp-controller="Product" asp-action="Index">Forsättt handla</a>
+        </div>
+    }
+    else
+    {
+
+        <div class="row">
+
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="col-sm-12 bg-light col-md-5 border-secondary m-2 box-shadow">
+                    <div>Tidning: @item.Product.Name</div>
+                    <div>
+                        Antal prenumerationer: @item.Quantity
+                    </div>
+                    <div>Pris: @item.Product.Price.ToString("C")</div>
+                    <a href="@Url.Action("Remove", "Cart", new { Id = item.Product.Id })"><i class="btn btn-outline-danger fas fa-trash"></i></a>
+
+                </div>
+            }
+
+
+        </div>
+        <div class="row">
+            <h4 class="col-sm-12 m-2">Totalt: @Model.Total().ToString("C")</h4>
+        </div>
+        <form method="post" asp-action="AddOrder">
+            <input class="btn btn-success" type="submit" value="Beställ" />
+        </form>
+    }
+}

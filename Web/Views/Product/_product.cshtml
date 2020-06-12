@@ -1,0 +1,21 @@
+﻿@model Web.Models.Product
+
+<div>
+    <div class="container-fluid">
+        <div class="row box-shadow rounded text-center">
+            <div class="col-md-6 col-xl-5 mt-xl-5">
+                <p><img src="@Model.ImgSrc" alt="@Model.Name" class="w-50"></p>
+            </div>
+            <div class="col-md-6 white-text text-center text-md-left mt-xl-5 mb-5">
+                <h5>@Model.Name</h5>
+                <p class="col">@Model.Description</p>
+                <h6 class="col">Pris @Model.Price.ToString("C")</h6>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="btn btn-success" onclick="AddToCart('@Model.Id')">Prenumerera</button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
